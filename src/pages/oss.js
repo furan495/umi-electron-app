@@ -68,7 +68,7 @@ export default props => {
             ),
         },
         { title: '大小', dataIndex: 'size', width: '15%', render: text => sizeRender(text) },
-        { title: '修改日期', dataIndex: 'updateTime', width: '15%', render: text => timeRender(text) },
+        { title: '修改日期', dataIndex: 'updateTime', width: '15%', ellipsis: true, render: text => timeRender(text) },
         { title: '操作', width: '15%', render: (text, record) => record.isDirectory === 2 && <a onClick={e => toDownload(e, record)}>下载</a> },
     ]
 
