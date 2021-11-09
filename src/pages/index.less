@@ -1,0 +1,30 @@
+.flexCenter {
+  display        : flex;
+  align-items    : center;
+  justify-content: center
+}
+
+.login {
+  position  : absolute;
+  background: transparent;
+  box-shadow: 0 0 6px #1afa29, inset 0 0 6px #1afa29;
+
+  :global(.ant-input-affix-wrapper) {
+      background: transparent;
+      box-shadow: 0 0 6px #1afa29, inset 0 0 6px #1afa29;
+
+      input,
+      svg {
+          color     : #1afa29;
+          background: transparent;
+      }
+  }
+
+  :global(.ant-btn) {
+      width     : 100%;
+      color     : #1afa29;
+      background: transparent;
+      box-shadow: 0 0 6px #1afa29, inset 0 0 6px #1afa29;
+  }
+
+}
