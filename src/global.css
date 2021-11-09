@@ -1,0 +1,9 @@
+.myBread {
+    max-width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    display: inline-block;
+}

@@ -2,7 +2,7 @@ const OSS = require('ali-oss')
 const { request } = require('./request')
 
 exports.initOss = async () => {
-    const response = await request('data/assume/role', { prefix: 'oss', method: 'POST' })
+    const response = await request('data/assume/role', { method: 'POST' })
     const client = new OSS({
         endpoint: response.data.endpoint,
         accessKeyId: response.data.accessKeyId,
