@@ -1,11 +1,13 @@
-const { app, ipcMain, BrowserWindow } = require('electron')
+const { app, ipcMain, dialog, BrowserWindow } = require('electron')
 
 const fs = require('fs')
 const path = require('path')
-const request = require('./request')
+const utils = require('./utils')
 const isDev = require('electron-is-dev')
 
-function createWindow() {
+let oss
+
+async function createWindow() {
     const win = new BrowserWindow({
         width: 800,
         height: 600,
@@ -19,6 +21,8 @@ function createWindow() {
             ? 'http://localhost:8000'
             : `file://${path.join(__dirname, '../dist/index.html')}`
     )
+
+    oss = await utils.initOss()
 
     if (isDev) {
         win.webContents.openDevTools({ mode: 'detach' })
@@ -39,8 +43,14 @@ app.on('activate', () => {
     }
 })
 
-ipcMain.handle('download', async (event, arg) => {
-    const result = await request('data/find', { prefix: 'oss', method: 'POST', body: { prefix: '测试数据', searchName: '', isMyData: '' } })
-    console.log(result)
-    return 11
+ipcMain.handle('download', async (event, file) => {
+    try {
+        const localPath = dialog.showSaveDialogSync(null, { defaultPath: file.realName })
+        const result = await oss.getStream(`${file.realPath}/${file.realName}`)
+        const writeStream = fs.createWriteStream(localPath)
+        result.stream.pipe(writeStream)
+        return localPath
+    } catch (error) {
+        return error
+    }
 })

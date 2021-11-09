@@ -7,7 +7,7 @@ exports.request = async (uri, options) => {
         jira: 'http://jira.annoroad.com/rest/api/2/',
         oss: 'http://test-mis.annuoyun.net/annoroad-cloud-mis-server/'
     }
-    const response = await fetch(`${hostname[options.prefix]}${uri}`, {
+    const response = await fetch(`${hostname[options.prefix] ?? ''}${uri}`, {
         ...extra,
         method: options?.method ?? 'GET',
         headers: {
@@ -16,5 +16,6 @@ exports.request = async (uri, options) => {
             Authorization: `Basic ${auth}`,
         }
     })
-    return await response.json()
+
+    return await options.blob ? response.blob() : response.json()
 }

@@ -11,8 +11,6 @@ export default defineConfig({
   routes: [
     { path: '/', redirect: 'oss' },
     { path: 'oss', component: '@/pages/oss' },
-    { path: 'login', component: '@/pages/login' },
-    { path: 'jira', component: '@/pages/jira' },
   ],
   dynamicImport: {},
   fastRefresh: {},
