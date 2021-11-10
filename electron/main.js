@@ -65,7 +65,7 @@ ipcMain.on('get-tasks', (event, arg) => {
         key: task.key,
         status: task.getStatus(),
         localPath: task.localPath,
-        percent: task.getPercent(),
+        percent: task.getLoaded(),
         title: task.record.fileName,
     }))
     if (tasks.length !== 0 && tasks.filter(task => task.status === 'downloading').length === 0) {

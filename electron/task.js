@@ -3,7 +3,7 @@ class DownloadTask {
 
     constructor(oss, record, localPath) {
         this.oss = oss
-        this.percent = 0
+        this.loaded = 0
         this.record = record
         this.status = 'waiting'
         this.localPath = localPath
@@ -11,6 +11,7 @@ class DownloadTask {
     }
 
     async start() {
+        let tempSize = 0
         this.setStatus('downloading')
         const result = await this.oss.getStream(`${this.record.realPath}/${this.record.realName}`)
         const writeStream = fs.createWriteStream(`${this.localPath}.downloading`)
@@ -19,6 +20,10 @@ class DownloadTask {
                 if (err) throw err
                 this.setStatus('finish')
             })
+        })
+        result.stream.on('data', (chunk) => {
+            tempSize += chunk.length
+            this.setLoaded(tempSize)
         })
         result.stream.pipe(writeStream)
     }
@@ -31,12 +36,12 @@ class DownloadTask {
         return this.status
     }
 
-    setPercent(percent) {
-        this.percent = percent
+    setLoaded(loaded) {
+        this.loaded = loaded
     }
 
-    getPercent() {
-        return this.percent
+    getLoaded() {
+        return (this.loaded / this.record.size) * 100
     }
 
 }

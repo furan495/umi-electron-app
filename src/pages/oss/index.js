@@ -98,7 +98,7 @@ export default props => {
                         title={item.title}
                         description={<Tooltip title={item.localPath}>{`${item.localPath.slice(0, 20)}...`}</Tooltip>}
                     />
-                    <Progress type='circle' percent={item.percent} width={40} />
+                    <Progress type='circle' percent={item.percent.toFixed(2)} width={40} />
                 </List.Item>
             )}
         />
