@@ -66,7 +66,7 @@ ipcMain.on('get-tasks', (event, arg) => {
         status: task.getStatus(),
         title: task.record.fileName,
     }))
-    if (tasks.filter(task => task.status === 'downloading').length === 0) {
+    if (tasks.length !== 0 && tasks.filter(task => task.status === 'downloading').length === 0) {
         taskList = []
     }
     event.returnValue = JSON.stringify({ tasks })

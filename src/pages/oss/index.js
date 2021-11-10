@@ -59,12 +59,12 @@ export default props => {
     const toDownload = async (e, record) => {
         e.preventDefault()
         e.stopPropagation()
-        console.log(await ipcRenderer.invoke('download', record))
+        ipcRenderer.invoke('download', record)
         clock = setInterval(async () => {
             const result = await ipcRenderer.sendSync('get-tasks', 'get-tasks')
             const tasks = JSON.parse(result).tasks
             setTasks(tasks)
-            if (tasks.filter(task => task.status === 'downloading').length === 0) {
+            if (tasks.length !== 0 && tasks.filter(task => task.status === 'downloading').length === 0) {
                 clearInterval(clock)
                 setTasks([])
                 return
@@ -89,17 +89,24 @@ export default props => {
     const content = (
         <List
             size='small'
-            renderItem={item => <List.Item>{item.title}</List.Item>}
+            locale={{ emptyText: '暂无任务' }}
+            style={{ width: 400, maxHeight: 500, overflow: 'scroll' }}
             dataSource={tasks.filter(item => item.status === 'downloading')}
+            renderItem={item => (
+                <List.Item actions={[<a key='stop'>stop</a>, <a key='resume'>resume</a>]}>
+                    <List.Item.Meta title={item.title} description='120M/s' />
+                    <Progress type='circle' percent={item.percent} width={40} />
+                </List.Item>
+            )}
         />
     )
 
     return (
         <Card bordered={false}>
-            <Row style={{ marginBottom: 6 }}>
-                <Col span={20}><OssBreads dir={dir} search={search} setSearch={setSearch} setAction={setAction} /></Col>
-                <Col style={{ cursor: 'pointer' }} span={4}>
-                    <Popover content={content} placement='bottomRight'>
+            <Row type='flex' style={{ marginBottom: 6 }}>
+                <Col><OssBreads dir={dir} search={search} setSearch={setSearch} setAction={setAction} /></Col>
+                <Col style={{ cursor: 'pointer', marginLeft: 'auto' }}>
+                    <Popover content={content} placement='bottomRight' trigger='click'>
                         {`任务列表:${tasks.filter(item => item.status === 'downloading').length}/${tasks.length}`}
                     </Popover>
                 </Col>
