@@ -83,7 +83,6 @@ export default props => {
                 onRow={onRow}
                 columns={columns}
                 pagination={false}
-                scroll={{ y: 800 }}
                 dataSource={dataSource}
                 loading={action === 'GET'}
             />
