@@ -6,6 +6,7 @@ const isDev = require('electron-is-dev')
 const { DownloadTask } = require('./task')
 
 let oss
+const taskList = []
 
 async function createWindow() {
     const win = new BrowserWindow({
@@ -47,13 +48,23 @@ ipcMain.handle('download', async (event, record) => {
     try {
         const localPath = dialog.showSaveDialogSync(null, { defaultPath: record.fileName })
         if (record.isDirectory === 1) {
-            utils.loopFolder(oss, record, localPath)
+            utils.loopFolder(oss, record, localPath, taskList)
         } else {
             const task = new DownloadTask(oss, record, localPath)
+            taskList.push(task)
             task.start()
         }
         return localPath
     } catch (error) {
         return error
     }
+})
+
+ipcMain.on('get-tasks', (event, arg) => {
+    const tasks = taskList.map(task => ({
+        key: task.key,
+        status: task.getStatus(),
+        title: task.record.fileName,
+    }))
+    event.returnValue = JSON.stringify({ tasks })
 })

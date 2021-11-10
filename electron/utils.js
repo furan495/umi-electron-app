@@ -15,13 +15,14 @@ exports.initOss = async () => {
     return client
 }
 
-const loopFolder = async (oss, record, localPath) => {
+const loopFolder = async (oss, record, localPath, taskList) => {
     const response = await request('data/find', { method: 'POST', body: { prefix: `${record.path ?? ''}${record.path ? '/' : ''}${record.fileName}`, searchName: '', isMyData: '' } })
     fs.mkdir(localPath, { recursive: true }, (err) => {
         if (err) throw err
-        response.data.folders.forEach(folder => loopFolder(oss, folder, `${localPath}/${folder.fileName}`))
+        response.data.folders.forEach(folder => loopFolder(oss, folder, `${localPath}/${folder.fileName}`, taskList))
         response.data.files.forEach(file => {
             const task = new DownloadTask(oss, file, `${localPath}/${file.fileName}`)
+            taskList.push(task)
             task.start()
         })
     })

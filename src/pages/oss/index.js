@@ -1,14 +1,16 @@
 import moment from 'moment'
-import { Table, Card } from 'antd'
 import { OssBreads } from './components'
 import { useState, useEffect } from 'react'
 import { FolderOutlined } from '@ant-design/icons'
+import { Table, Card, Row, Col, Progress, Popover, List } from 'antd'
 
 export default props => {
 
+    let clock
     const { httpRequest } = window
     const { ipcRenderer } = window.electron
 
+    const [tasks, setTasks] = useState([])
     const [dir, setDir] = useState(['全部文件'])
     const [action, setAction] = useState('GET')
     const [dataSource, setDataSource] = useState([])
@@ -58,6 +60,16 @@ export default props => {
         e.preventDefault()
         e.stopPropagation()
         console.log(await ipcRenderer.invoke('download', record))
+        clock = setInterval(async () => {
+            const result = await ipcRenderer.sendSync('get-tasks', 'get-tasks')
+            const tasks = JSON.parse(result).tasks
+            setTasks(tasks)
+            if (tasks.filter(task => task.status === 'downloading').length === 0) {
+                clearInterval(clock)
+                setTasks([])
+                return
+            }
+        }, 500)
     }
 
     const columns = [
@@ -74,9 +86,18 @@ export default props => {
         { title: '操作', width: '10%', render: (text, record) => <a onClick={e => toDownload(e, record)}>下载</a> },
     ]
 
+    const content = (<List size='small' dataSource={tasks} renderItem={item => <List.Item>{item.title}</List.Item>} />)
+
     return (
         <Card bordered={false}>
-            <OssBreads dir={dir} search={search} setSearch={setSearch} setAction={setAction} />
+            <Row style={{ marginBottom: 6 }}>
+                <Col span={20}><OssBreads dir={dir} search={search} setSearch={setSearch} setAction={setAction} /></Col>
+                <Col style={{ cursor: 'pointer' }} span={4}>
+                    <Popover content={content} placement='bottomRight'>
+                        {`任务列表:${tasks.filter(item => item.status === 'downloading').length}/${tasks.length}`}
+                    </Popover>
+                </Col>
+            </Row>
             <Table
                 size='small'
                 onRow={onRow}

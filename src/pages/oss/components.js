@@ -14,7 +14,7 @@ export const OssBreads = ({ dir, search, setSearch, setAction }) => {
     }
 
     return (
-        <Space style={{ marginBottom: 24 }}>
+        <Space>
             {dir.length > 1 && (<><a onClick={previous}>返回上一级</a><span style={{ color: '#00000073' }}>|</span></>)}
             <Breadcrumb separator='>'>
                 {dir.map((bread, index) => (
