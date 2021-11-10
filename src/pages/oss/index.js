@@ -57,8 +57,7 @@ export default props => {
     const toDownload = async (e, record) => {
         e.preventDefault()
         e.stopPropagation()
-        const result = await ipcRenderer.invoke('download', record)
-        console.log(result)
+        console.log(await ipcRenderer.invoke('download', record))
     }
 
     const columns = [

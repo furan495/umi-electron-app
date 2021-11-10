@@ -52,7 +52,7 @@ ipcMain.handle('download', async (event, record) => {
             const task = new DownloadTask(oss, record, localPath)
             task.start()
         }
-        return 'success'
+        return localPath
     } catch (error) {
         return error
     }
