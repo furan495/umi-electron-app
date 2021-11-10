@@ -6,7 +6,7 @@ const isDev = require('electron-is-dev')
 const { DownloadTask } = require('./task')
 
 let oss
-const taskList = []
+let taskList = []
 
 async function createWindow() {
     const win = new BrowserWindow({
@@ -66,5 +66,8 @@ ipcMain.on('get-tasks', (event, arg) => {
         status: task.getStatus(),
         title: task.record.fileName,
     }))
+    if (tasks.filter(task => task.status === 'downloading').length === 0) {
+        taskList = []
+    }
     event.returnValue = JSON.stringify({ tasks })
 })

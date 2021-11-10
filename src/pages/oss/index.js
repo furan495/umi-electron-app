@@ -86,7 +86,13 @@ export default props => {
         { title: '操作', width: '10%', render: (text, record) => <a onClick={e => toDownload(e, record)}>下载</a> },
     ]
 
-    const content = (<List size='small' dataSource={tasks} renderItem={item => <List.Item>{item.title}</List.Item>} />)
+    const content = (
+        <List
+            size='small'
+            renderItem={item => <List.Item>{item.title}</List.Item>}
+            dataSource={tasks.filter(item => item.status === 'downloading')}
+        />
+    )
 
     return (
         <Card bordered={false}>
