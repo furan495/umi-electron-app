@@ -2,7 +2,7 @@ import moment from 'moment'
 import { OssBreads } from './components'
 import { useState, useEffect } from 'react'
 import { FolderOutlined } from '@ant-design/icons'
-import { Table, Card, Row, Col, Progress, Popover, List } from 'antd'
+import { Table, Card, Row, Col, Progress, Popover, List, Tooltip } from 'antd'
 
 export default props => {
 
@@ -94,7 +94,10 @@ export default props => {
             dataSource={tasks.filter(item => item.status === 'downloading')}
             renderItem={item => (
                 <List.Item actions={[<a key='stop'>stop</a>, <a key='resume'>resume</a>]}>
-                    <List.Item.Meta title={item.title} description='120M/s' />
+                    <List.Item.Meta
+                        title={item.title}
+                        description={<Tooltip title={item.localPath}>{`${item.localPath.slice(0, 20)}...`}</Tooltip>}
+                    />
                     <Progress type='circle' percent={item.percent} width={40} />
                 </List.Item>
             )}

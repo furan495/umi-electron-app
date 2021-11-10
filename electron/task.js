@@ -3,6 +3,7 @@ class DownloadTask {
 
     constructor(oss, record, localPath) {
         this.oss = oss
+        this.percent = 0
         this.record = record
         this.status = 'waiting'
         this.localPath = localPath
@@ -28,6 +29,14 @@ class DownloadTask {
 
     getStatus() {
         return this.status
+    }
+
+    setPercent(percent) {
+        this.percent = percent
+    }
+
+    getPercent() {
+        return this.percent
     }
 
 }
