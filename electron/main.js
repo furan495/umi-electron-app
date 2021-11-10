@@ -1,16 +1,16 @@
 const { app, ipcMain, dialog, BrowserWindow } = require('electron')
 
-const fs = require('fs')
 const path = require('path')
 const utils = require('./utils')
 const isDev = require('electron-is-dev')
+const { DownloadTask } = require('./task')
 
 let oss
 
 async function createWindow() {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1000,
+        height: 800,
         webPreferences: {
             preload: path.join(__dirname, '../electron/preload.js'),
         },
@@ -25,7 +25,7 @@ async function createWindow() {
     oss = await utils.initOss()
 
     if (isDev) {
-        win.webContents.openDevTools({ mode: 'detach' })
+        win.webContents.openDevTools()
     }
 }
 
@@ -43,13 +43,16 @@ app.on('activate', () => {
     }
 })
 
-ipcMain.handle('download', async (event, file) => {
+ipcMain.handle('download', async (event, record) => {
     try {
-        const localPath = dialog.showSaveDialogSync(null, { defaultPath: file.realName })
-        const result = await oss.getStream(`${file.realPath}/${file.realName}`)
-        const writeStream = fs.createWriteStream(localPath)
-        result.stream.pipe(writeStream)
-        return localPath
+        const localPath = dialog.showSaveDialogSync(null, { defaultPath: record.fileName })
+        if (record.isDirectory === 1) {
+            utils.loopFolder(oss, record, localPath)
+        } else {
+            const task = new DownloadTask(oss, record, localPath)
+            task.start()
+        }
+        return 'success'
     } catch (error) {
         return error
     }

@@ -14,6 +14,7 @@
     "test:coverage": "umi-test --coverage",
     "dev": "concurrently -k \"umi dev\" \"npm:electron\"",
     "electron": "wait-on tcp:8000 && electron .",
+    "electron-dev": "electron .",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },

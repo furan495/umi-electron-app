@@ -16,7 +16,7 @@ export default props => {
 
     useEffect(async () => {
         if (action === 'GET') {
-            const response = await httpRequest.request('data/find', { prefix: 'oss', method: 'POST', body: search })
+            const response = await httpRequest.request('data/find', { method: 'POST', body: search })
             const folders = response.data?.folders?.map((item, key) => ({ ...item, key })) ?? []
             const files = response.data?.files?.map((item, key) => ({ ...item, key: folders.length + key })) ?? []
             setDir([dir[0], ...search.prefix.split('/')].filter(item => item !== ''))
@@ -72,7 +72,7 @@ export default props => {
         },
         { title: '大小', dataIndex: 'size', width: '15%', render: text => sizeRender(text) },
         { title: '修改日期', dataIndex: 'updateTime', width: '15%', ellipsis: true, render: text => timeRender(text) },
-        { title: '操作', width: '10%', render: (text, record) => record.isDirectory === 2 && <a onClick={e => toDownload(e, record)}>下载</a> },
+        { title: '操作', width: '10%', render: (text, record) => <a onClick={e => toDownload(e, record)}>下载</a> },
     ]
 
     return (
