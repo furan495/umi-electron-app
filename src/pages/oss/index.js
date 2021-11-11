@@ -6,7 +6,6 @@ import { FolderOutlined, PauseOutlined, DeleteOutlined, CaretRightOutlined } fro
 
 export default props => {
 
-    let clock
     const { httpRequest } = window
     const { ipcRenderer } = window.electron
 
@@ -70,14 +69,10 @@ export default props => {
         e.preventDefault()
         e.stopPropagation()
         ipcRenderer.invoke('download', record)
-        clock = setInterval(async () => {
+        setInterval(async () => {
             const result = await ipcRenderer.sendSync('get-tasks', 'get-tasks')
             const tasks = JSON.parse(result).tasks
             setTasks(tasks)
-            if (tasks.length === 0) {
-                clearInterval(clock)
-                return
-            }
         }, 500)
     }
 

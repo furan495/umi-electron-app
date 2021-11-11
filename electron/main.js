@@ -68,7 +68,7 @@ ipcMain.on('get-tasks', (event, arg) => {
         speed: task.getSpeed(),
         localPath: task.localPath,
     }))
-    if (tasks.filter(task => task.status === 'finish').length === tasks.length) {
+    if (tasks.length !== 0 && tasks.filter(task => task.status === 'finish').length === tasks.length) {
         taskList = []
     }
     event.returnValue = JSON.stringify({ tasks })
