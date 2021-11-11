@@ -88,16 +88,12 @@ export default props => {
 
     const content = (
         <List
-            size='small'
             locale={{ emptyText: '暂无任务' }}
             style={{ width: 400, maxHeight: 500, overflow: 'scroll' }}
             dataSource={tasks.filter(item => item.status === 'downloading')}
             renderItem={item => (
                 <List.Item actions={[<a key='stop'>stop</a>, <a key='resume'>resume</a>]}>
-                    <List.Item.Meta
-                        title={item.title}
-                        description={<Tooltip title={item.localPath}>{`${item.localPath.slice(0, 20)}...`}</Tooltip>}
-                    />
+                    <List.Item.Meta title={<Tooltip title={item.localPath}>{item.title}</Tooltip>} description='120M/s' />
                     <Progress type='circle' percent={item.percent.toFixed(2)} width={40} />
                 </List.Item>
             )}
