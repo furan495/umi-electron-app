@@ -62,13 +62,13 @@ ipcMain.handle('download', async (event, record) => {
 
 ipcMain.on('get-tasks', (event, arg) => {
     const tasks = taskList.map(task => ({
-        key: task.key,
-        status: task.getStatus(),
+        status: task.status,
+        loaded: task.loaded,
+        record: task.record,
+        speed: task.getSpeed(),
         localPath: task.localPath,
-        percent: task.getLoaded(),
-        title: task.record.fileName,
     }))
-    if (tasks.length !== 0 && tasks.filter(task => task.status === 'downloading').length === 0) {
+    if (tasks.filter(task => task.status === 'finish').length === tasks.length) {
         taskList = []
     }
     event.returnValue = JSON.stringify({ tasks })
