@@ -6,7 +6,7 @@
   "description": "umi-electron-app demo",
   "author": "chunhuizhang",
   "scripts": {
-    "start": "umi dev",
+    "start": "electron-forge start",
     "build": "umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
@@ -34,6 +34,7 @@
     "ali-oss": "^6.16.0",
     "electron": "^15.3.1",
     "electron-is-dev": "^2.0.0",
+    "electron-rebuild": "^3.2.5",
     "electron-squirrel-startup": "^1.0.0",
     "node-fetch": "^2.6.6",
     "react": "17.x",
