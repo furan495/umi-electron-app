@@ -6,7 +6,7 @@
   "description": "umi-electron-app demo",
   "author": "chunhuizhang",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "umi dev",
     "build": "umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
@@ -16,7 +16,8 @@
     "electron": "wait-on tcp:8000 && electron .",
     "electron-dev": "electron .",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "make-win32": "electron-forge make --platform win32"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -67,7 +68,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "umi_electron_app"
+            "name": "umi-electron-app"
           }
         },
         {
