@@ -8,10 +8,11 @@
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
-    "package": "electron-forge package",
+    "electron": "electron .",
     "make": "electron-forge make",
-    "make-win32": "electron-forge make --platform win32 --arch x64",
-    "electron": "electron ."
+    "package": "electron-forge package",
+    "make-win32": "electron-forge make --platform=win32 --arch=ia32,x64",
+    "make-linux": "electron-forge make --platform=linux --arch=ia32,x64"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -58,7 +59,10 @@
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "umi_electron_app"
-          }
+          },
+          "platforms": [
+            "win32"
+          ]
         },
         {
           "name": "@electron-forge/maker-zip",

@@ -10,7 +10,7 @@ let taskList = []
 
 async function createWindow() {
     const win = new BrowserWindow({
-        width: 1000,
+        width: 1600,
         height: 800,
         webPreferences: {
             preload: path.join(__dirname, '../electron/preload.js'),
