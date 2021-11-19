@@ -6,6 +6,7 @@ exports.request = async (uri, options) => {
         ...extra,
         method: options?.method ?? 'GET',
         headers: {
+            token: '5rh820t+HWiNwYWuUY/mg7JaExxNCRZkG2ReAtt9RFI=',
             'Content-Type': 'application/json',
         }
     })

@@ -9,7 +9,10 @@ export default props => {
     const { httpRequest } = window
     const { ipcRenderer } = window.electron
 
-    const [tasks, setTasks] = useState([])
+    const [tasks, setTasks] = useState([
+        { status: 'downloading', loaded: 1234, record: {}, speed: 100, localPath: '111' },
+        { status: 'stop', loaded: 1234, record: {}, speed: 100, localPath: '111' },
+    ])
     const [dir, setDir] = useState(['全部文件'])
     const [action, setAction] = useState('GET')
     const [dataSource, setDataSource] = useState([])

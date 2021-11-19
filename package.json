@@ -8,15 +8,11 @@
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
-    "postinstall": "umi generate tmp",
-    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "test": "umi-test",
-    "test:coverage": "umi-test --coverage",
-    "dev": "concurrently -k \"umi dev\" \"npm:electron\"",
-    "electron": "wait-on tcp:8000 && electron .",
-    "electron-dev": "electron .",
+    "electron": "electron .",
+    "make": "electron-forge make",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make-win32": "electron-forge make --platform=win32 --arch=ia32,x64",
+    "make-linux": "electron-forge make --platform=linux --arch=ia32,x64"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -32,7 +28,6 @@
   "dependencies": {
     "@ant-design/pro-layout": "^6.5.0",
     "ali-oss": "^6.16.0",
-    "electron": "^15.3.1",
     "electron-is-dev": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "node-fetch": "^2.6.6",
@@ -50,13 +45,10 @@
     "@types/react-dom": "^17.0.0",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.5.20",
-    "concurrently": "^6.3.0",
-    "electron": "^15.3.1",
-    "electron-rebuild": "^3.2.5",
+    "electron": "16.0.0",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
     "typescript": "^4.1.2",
-    "wait-on": "^6.0.0",
     "yorkie": "^2.0.0"
   },
   "config": {
@@ -67,7 +59,10 @@
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "umi_electron_app"
-          }
+          },
+          "platforms": [
+            "win32"
+          ]
         },
         {
           "name": "@electron-forge/maker-zip",
